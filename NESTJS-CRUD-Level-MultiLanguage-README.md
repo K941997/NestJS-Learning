@@ -30,9 +30,6 @@ export class Level extends BaseEntity {
   })
   description: string;
 
-  @Column({ enum: BooleanEnum, default: BooleanEnum.TRUE })
-  enabled: BooleanEnum;
-
   @OneToMany(
     () => LevelTranslation,
     (levelTranslate: LevelTranslation) => levelTranslate.level,
@@ -41,6 +38,21 @@ export class Level extends BaseEntity {
     },
   )
   translates: LevelTranslation[];
+
+  // Join videos
+  @OneToOne(() => Videos, (video) => video.level, { cascade: ['insert'] })
+  video: Videos;
+  // End join videos
+
+  // Join user
+  @OneToMany(() => User, (user) => user.level, { cascade: ['insert'] })
+  user: User[];
+  // End join user
+
+  // Join audios
+  @OneToOne(() => Audio, (audio) => audio.level, { cascade: ['insert'] })
+  audio: Audio;
+  // End join audios
 }
 
 # level-translation.entity.ts:
@@ -364,18 +376,33 @@ async update(
 
 ###### Admin REMOVEONE Level (MultiLanguage):
 # level.service.ts:
-//!Admin REMOVEONE Level (MultiLanguage):
-async remove(key: string) {
-  const levelToDelete = await this.levelRepo.findOne(key);
-  if (!levelToDelete) {
-    throw new NotFoundException('Level Not Found!');
-  } else {
+ //Admin REMOVEONE Level (MultiLanguage):
+  async remove(key: string) {
+    const levelToDelete = await this.levelRepo.findOne(key);
+    if (!levelToDelete) {
+      throw new NotFoundException('Level Not Found!');
+    }
+
+    const levelInVideo = await this.videosRepository.findOne({ levelKey: key });
+    if (levelInVideo) {
+      throw new ConflictException(`The video is linked to this level!`);
+    }
+
+    const levelInUser = await this.userRepository.findOne({ levelKey: key });
+    if (levelInUser) {
+      throw new ConflictException(`The user is linked to this level!`);
+    }
+
+    const levelInAudio = await this.audioRepository.findOne({ levelKey: key });
+    if (levelInAudio) {
+      throw new ConflictException(`The audio is linked to this level!`);
+    }
+
     return await Promise.all([
       this.levelRepo.softDelete({ key: key, deletedAt: IsNull() }),
       this.levelTransRepo.softDelete({ levelKey: key, deletedAt: IsNull() }),
     ]);
   }
-}
 
 # level-admin.controller.ts:
 //!Admin REMOVEONE Level (MultiLanguage):
@@ -386,25 +413,35 @@ remove(@Param() param) {
 
 ###### Admin REMOVEMULTI Levels (MultiLanguage):
 # level.service.ts:
-//!Admin REMOVEMULTI Levels (MultiLanguage):
-async removeMulti(keys: string[]) {
-  const levels = await this.levelRepo.find({ //thừa
-    key: In(keys),
-  });
-  levels.filter((level) => !keys.includes(level.key)); //thừa
+//Admin REMOVEMULTI Levels (MultiLanguage):
+  async removeMulti(keys: string[]) {
+    const levelInVideo = await this.videosRepository.findOne({ levelKey: In(keys) });
+    if (levelInVideo) {
+      throw new ConflictException(`The video is linked to this level!`);
+    }
 
-  const [result] = await Promise.all([
-    this.levelRepo.softDelete({ key: In(keys), deletedAt: IsNull() }),
-    this.levelTransRepo.softDelete({
-      levelKey: In(keys),
-      deletedAt: IsNull(),
-    }),
-  ]);
+    const levelInUser = await this.userRepository.findOne({ levelKey: In(keys) });
+    if (levelInUser) {
+      throw new ConflictException(`The user is linked to this level!`);
+    }
 
-  const localize = await this.translateService.t('main.entity.level'); //i18n
-  if (!result.affected) throw new NotFoundExc(localize);
-  return result;
-}
+    const levelInAudio = await this.audioRepository.findOne({ levelKey: In(keys) });
+    if (levelInAudio) {
+      throw new ConflictException(`The audio is linked to this level!`);
+    }
+
+    const [result] = await Promise.all([
+      this.levelRepo.softDelete({ key: In(keys), deletedAt: IsNull() }),
+      this.levelTransRepo.softDelete({
+        levelKey: In(keys),
+        deletedAt: IsNull(),
+      }),
+    ]);
+
+    const localize = await this.translateService.t('main.entity.level'); //i18n
+    if (!result.affected) throw new NotFoundExc(localize);
+    return result;
+  }
 # level-admin.controller.ts:
 //!Admin REMOVEMULTI Levels (MultiLanguage):
 @Delete()

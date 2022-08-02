@@ -1,13 +1,25 @@
-- Code mới:
+- Code mới từ dự án bản thân:
+git clone https://github.com/Kay941997/NestJS-Learning.git
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M <your branch>
+git remote add origin https://github.com/Kay941997/NestJS-Learning.git
+git push -u origin <your branch>
+
+- Code mới từ dự án công ty:
+git clone https://github.com/bilisoftware/clevertube-web-admin.git
 git checkout dev (sang nhánh dev)
 git pull (kéo dev về Local)
 git checkout -b feature/topic (tạo nhánh mới có code của pull dev và sang nhánh)
+
+- Code xong:
 git add . (lưu code)
 git commit -m "..." (tạo commit đẩy lên Git)
 git push origin <your branch> (đẩy lên Git)
 
 
-- Kiểm tra thay đổi và lưu lại ở Local:
+- Cập nhật code mới cho branch của mình:
 git checkout dev
 git pull
 git checkout feature/topic (sang nhánh branch đã tồn tại)
