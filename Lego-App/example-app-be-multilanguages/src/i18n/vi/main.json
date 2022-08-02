@@ -1,0 +1,24 @@
+{
+  "exception": {
+    "INTERNAL_ERROR": "Hệ thống đang gặp sự cố. Vui lòng thử lại trong giây lát!",
+    "BAD_REQUEST": "Vui lòng gửi thông tin yêu cầu hợp lệ!",
+    "CONFLICT_ERROR": "{name} đã được sử dụng trong hệ thống. Vui lòng thử lại với thông tin khác!",
+    "UNAUTHORIZED_ERROR": "Vui lòng đăng nhập để thực hiện hành động này!",
+    "NOT_FOUND_ERROR": "{name} không tồn tại. Vui lòng thử lại sau!",
+    "FORBIDDEN_ERROR": "Bạn không có quyền để thực hiện hành động này. Vui lòng thử lại sau!",
+    "INVALID_INFOMATION": "{name} không tồn tại. Vui lòng thử lại với thông tin chính xác!",
+    "ROUTE_NOT_FOUND_ERROR": "Đường dẫn không tồn tại. Vui lòng thử lại với đường dẫn khác!"
+  },
+  "entity": {
+    "article": "Bài viết",
+    "article_category": "Chuyên mục bài viết",
+    "user_exist": "Thông tin người dùng",
+    "topic": "Chủ đề",
+    "topic_group": "Nhóm",
+    "topic_group_or_image": "Tên nhóm hoặc hình ảnh",
+    "user_role": "Chức danh của người dùng",
+    "user_name": "Tên người dùng",
+    "user": "Người dùng",
+    "level": "Cấp độ"
+  }
+}

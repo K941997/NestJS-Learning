@@ -1,0 +1,19 @@
+{
+  "exception": {
+    "INTERNAL_ERROR": "Server is meeting some internal error. Please try again later!",
+    "BAD_REQUEST": "Please request the valid infomation!",
+    "CONFLICT_ERROR": "{name} is in-used in our system. Please re-try with another!",
+    "UNAUTHORIZED_ERROR": "Please login to perform next action!",
+    "NOT_FOUND_ERROR": "{name} is not found. Please try again!",
+    "FORBIDDEN_ERROR": "You do not have permission to perform this action. Please try again later!",
+    "INVALID_INFOMATION": "{name} is not valid. Please request the valid infomation!",
+    "ROUTE_NOT_FOUND_ERROR": "Route is not found. Please re-try with another!"
+  },
+  "entity": {
+    "article": "Article",
+    "article_category": "Article category",
+    "user_exist": "User infomation",
+    "topic": "Topic",
+    "level": "Level"
+  }
+}
